@@ -33,16 +33,23 @@ class _HomePageClass extends State<HomePage> {
 
   Widget _taskList() {
     return ListView(
-      children: const [
+      children: [
         ListTile(
-          title: Text(
+          title: const Text(
             "Do Code!",
             style: TextStyle(
               decoration: TextDecoration.lineThrough,
               color: Colors.black,
-              fontSize: 30,
+              fontSize: 25,
               fontWeight: FontWeight.w400,
             ),
+          ),
+          subtitle: Text(
+            DateTime.now().toString(),
+          ),
+          trailing: const Icon(
+            Icons.check_box_outlined,
+            color: Colors.blue,
           ),
         ),
       ],
