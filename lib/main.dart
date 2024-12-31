@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:taskly/pages/home_page.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter("hive_Pages");
   runApp(const MyApp());
 }
 
