@@ -28,6 +28,7 @@ class _HomePageClass extends State<HomePage> {
         ),
       ),
       body: _taskList(),
+      floatingActionButton: _floatingButton(),
     );
   }
 
@@ -54,5 +55,17 @@ class _HomePageClass extends State<HomePage> {
         ),
       ],
     );
+  }
+
+  Widget _floatingButton() {
+    return (FloatingActionButton(
+      backgroundColor: Colors.blue,
+      shape: const CircleBorder(),
+      child: const Icon(
+        Icons.add,
+        color: Colors.white,
+      ),
+      onPressed: () {},
+    ));
   }
 }
