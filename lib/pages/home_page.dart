@@ -28,7 +28,7 @@ class _HomePageClass extends State<HomePage> {
         ),
       ),
       body: _taskList(),
-      floatingActionButton: _floatingButton(),
+      floatingActionButton: _floatingButton(context),
     );
   }
 
@@ -57,7 +57,8 @@ class _HomePageClass extends State<HomePage> {
     );
   }
 
-  Widget _floatingButton() {
+  Widget _floatingButton(context) {
+    final scaffold = ScaffoldMessenger.of(context);
     return (FloatingActionButton(
       backgroundColor: Colors.blue,
       shape: const CircleBorder(),
@@ -65,7 +66,22 @@ class _HomePageClass extends State<HomePage> {
         Icons.add,
         color: Colors.white,
       ),
-      onPressed: () {},
+      onPressed: () {
+        scaffold.showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.blue,
+            content: const Text(
+              "Task Added!",
+            ),
+            action: SnackBarAction(
+              label: "OK",
+              textColor: Colors.white,
+              backgroundColor: Colors.blue,
+              onPressed: () => scaffold.hideCurrentSnackBar,
+            ),
+          ),
+        );
+      },
     ));
   }
 }
