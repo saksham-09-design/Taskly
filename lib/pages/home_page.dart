@@ -28,7 +28,7 @@ class _HomePageClass extends State<HomePage> {
         ),
       ),
       body: _taskList(),
-      floatingActionButton: _floatingButton(context),
+      floatingActionButton: _floatingButton(),
     );
   }
 
@@ -57,8 +57,7 @@ class _HomePageClass extends State<HomePage> {
     );
   }
 
-  Widget _floatingButton(context) {
-    final scaffold = ScaffoldMessenger.of(context);
+  Widget _floatingButton() {
     return (FloatingActionButton(
       backgroundColor: Colors.blue,
       shape: const CircleBorder(),
@@ -67,21 +66,37 @@ class _HomePageClass extends State<HomePage> {
         color: Colors.white,
       ),
       onPressed: () {
-        scaffold.showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.blue,
-            content: const Text(
-              "Task Added!",
-            ),
-            action: SnackBarAction(
-              label: "OK",
-              textColor: Colors.white,
-              backgroundColor: Colors.blue,
-              onPressed: () => scaffold.hideCurrentSnackBar,
-            ),
-          ),
-        );
+        displayDialog();
+        showToast(context, content: "Task Created");
       },
     ));
+  }
+
+  void displayDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            title: Text("Alert Shown!"),
+          );
+        });
+  }
+
+  void showToast(context, {required String content}) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blue,
+        content: Text(
+          content,
+        ),
+        action: SnackBarAction(
+          label: "OK",
+          textColor: Colors.white,
+          backgroundColor: Colors.blue,
+          onPressed: () => scaffold.hideCurrentSnackBar,
+        ),
+      ),
+    );
   }
 }
