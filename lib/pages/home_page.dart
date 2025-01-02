@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:taskly/modals/task.dart';
 
 class HomePage extends StatefulWidget {
   HomePage();
@@ -14,6 +15,7 @@ class _HomePageClass extends State<HomePage> {
   _HomePageClass();
 
   String? _newTask;
+  Box? _box;
 
   @override
   Widget build(BuildContext context) {
@@ -35,28 +37,32 @@ class _HomePageClass extends State<HomePage> {
   }
 
   Widget _taskList() {
-    return ListView(
-      children: [
-        ListTile(
-          title: const Text(
-            "Do Code!",
-            style: TextStyle(
-              decoration: TextDecoration.lineThrough,
-              color: Colors.black,
-              fontSize: 25,
-              fontWeight: FontWeight.w400,
+    List taskItems = _box!.values.toList();
+    return ListView.builder(
+        itemCount: taskItems.length,
+        itemBuilder: (BuildContext context, int index) {
+          return {
+          ListTile(
+            title: const Text(
+              "Do Code!",
+              style: TextStyle(
+                decoration: TextDecoration.lineThrough,
+                color: Colors.black,
+                fontSize: 25,
+                fontWeight: FontWeight.w400,
+              ),
             ),
-          ),
-          subtitle: Text(
-            DateTime.now().toString(),
-          ),
-          trailing: const Icon(
-            Icons.check_box_outlined,
-            color: Colors.blue,
-          ),
-        ),
-      ],
-    );
+            subtitle: Text(
+              DateTime.now().toString(),
+            ),
+            trailing: const Icon(
+              Icons.check_box_outlined,
+              color: Colors.blue,
+            ),
+          );
+          }
+        };
+  );
   }
 
   Widget _taskView() {
@@ -64,6 +70,7 @@ class _HomePageClass extends State<HomePage> {
         future: Hive.openBox('task'),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            _box = snapshot.data;
             return _taskList();
           } else {
             return const Center(
