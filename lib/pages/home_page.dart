@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class HomePage extends StatefulWidget {
   HomePage();
@@ -12,6 +12,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageClass extends State<HomePage> {
   _HomePageClass();
+
+  String? _newTask;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class _HomePageClass extends State<HomePage> {
           ),
         ),
       ),
-      body: _taskList(),
+      body: _taskView(),
       floatingActionButton: _floatingButton(),
     );
   }
@@ -57,6 +59,20 @@ class _HomePageClass extends State<HomePage> {
     );
   }
 
+  Widget _taskView() {
+    return FutureBuilder(
+        future: Hive.openBox('task'),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return _taskList();
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
+  }
+
   Widget _floatingButton() {
     return (FloatingActionButton(
       backgroundColor: Colors.blue,
@@ -67,7 +83,6 @@ class _HomePageClass extends State<HomePage> {
       ),
       onPressed: () {
         displayDialog();
-        showToast(context, content: "Task Created");
       },
     ));
   }
@@ -76,13 +91,34 @@ class _HomePageClass extends State<HomePage> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return const AlertDialog(
-            title: Text("Alert Shown!"),
+          return AlertDialog(
+            title: const Text("Add New Task:"),
+            content: TextField(
+              onSubmitted: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  _newTask = value;
+                });
+              },
+            ),
+            actions: [
+              MaterialButton(
+                  onPressed: () {
+                    showToast(content: "Task Created");
+                  },
+                  padding: const EdgeInsets.all(2),
+                  child: const Text(
+                    "Save",
+                    style: TextStyle(
+                      color: Colors.blue,
+                    ),
+                  ))
+            ],
           );
         });
   }
 
-  void showToast(context, {required String content}) {
+  void showToast({required String content}) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
