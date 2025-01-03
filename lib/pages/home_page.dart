@@ -97,7 +97,7 @@ class _HomePageClass extends State<HomePage> {
     return FutureBuilder(
         future: Hive.openBox('task'),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
             _box = snapshot.data;
             return _taskList();
           } else {
