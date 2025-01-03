@@ -41,28 +41,28 @@ class _HomePageClass extends State<HomePage> {
     return ListView.builder(
         itemCount: taskItems.length,
         itemBuilder: (BuildContext context, int index) {
-          return {
-          ListTile(
-            title: const Text(
-              "Do Code!",
+          var task = Task.fromMap(taskItems[index]);
+          return ListTile(
+            title: Text(
+              task.content,
               style: TextStyle(
-                decoration: TextDecoration.lineThrough,
+                decoration: task.isDone ? TextDecoration.lineThrough : null,
                 color: Colors.black,
                 fontSize: 25,
                 fontWeight: FontWeight.w400,
               ),
             ),
             subtitle: Text(
-              DateTime.now().toString(),
+              task.timestamp.toString(),
             ),
-            trailing: const Icon(
-              Icons.check_box_outlined,
+            trailing: Icon(
+              task.isDone
+                  ? Icons.check_box_outlined
+                  : Icons.check_box_outline_blank,
               color: Colors.blue,
             ),
           );
-          }
-        };
-  );
+        });
   }
 
   Widget _taskView() {
@@ -101,7 +101,38 @@ class _HomePageClass extends State<HomePage> {
           return AlertDialog(
             title: const Text("Add New Task:"),
             content: TextField(
-              onSubmitted: (value) {},
+              onSubmitted: (_) {
+                if (_newTask != null || _newTask != "") {
+                  Task task = Task(
+                      content: _newTask!,
+                      timestamp: DateTime.now(),
+                      isDone: false);
+                  _box?.add(task.toMap());
+                  showToast(content: "Task Added!");
+                  setState(() {
+                    _newTask = null;
+                    Navigator.pop(context);
+                  });
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("Task Cant Be Empty!"),
+                          actions: [
+                            TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text(
+                                  "OK",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                  ),
+                                )),
+                          ],
+                        );
+                      });
+                }
+              },
               onChanged: (value) {
                 setState(() {
                   _newTask = value;
@@ -109,17 +140,47 @@ class _HomePageClass extends State<HomePage> {
               },
             ),
             actions: [
-              MaterialButton(
-                  onPressed: () {
-                    showToast(content: "Task Created");
-                  },
-                  padding: const EdgeInsets.all(2),
-                  child: const Text(
-                    "Save",
-                    style: TextStyle(
-                      color: Colors.blue,
-                    ),
-                  ))
+              TextButton(
+                onPressed: () {
+                  if (_newTask != null && _newTask != "") {
+                    Task task = Task(
+                        content: _newTask!,
+                        timestamp: DateTime.now(),
+                        isDone: false);
+                    _box?.add(task.toMap());
+                    showToast(content: "Task Added!");
+                    setState(() {
+                      _newTask = null;
+                      Navigator.pop(context);
+                    });
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Task Cant Be Empty!"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text(
+                                    "OK",
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                    ),
+                                  )),
+                            ],
+                          );
+                        });
+                  }
+                },
+                autofocus: true,
+                child: const Text(
+                  "Save",
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
             ],
           );
         });
