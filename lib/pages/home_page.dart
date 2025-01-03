@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:taskly/modals/task.dart';
+import 'package:taskly/app_Color/Pcolor.dart';
 
 class HomePage extends StatefulWidget {
   HomePage();
@@ -16,19 +17,35 @@ class _HomePageClass extends State<HomePage> {
 
   String? _newTask;
   Box? _box;
+  double? _deviceHeight;
 
   @override
   Widget build(BuildContext context) {
+    _deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text(
-          "TASKLY!",
-          style: TextStyle(
-            fontSize: 30,
-            color: Colors.white,
-            fontWeight: FontWeight.w800,
-          ),
+        toolbarHeight: _deviceHeight! * 0.25,
+        backgroundColor: pColor,
+        title: Row(
+          children: [
+            const Text(
+              "Welcome to\nTaskly!",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 40,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 40),
+              height: _deviceHeight! * .18,
+              width: _deviceHeight! * .16,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.contain,
+                      image: AssetImage("assets/images/Panda.png"))),
+            )
+          ],
         ),
       ),
       body: _taskView(),
@@ -59,7 +76,7 @@ class _HomePageClass extends State<HomePage> {
               task.isDone
                   ? Icons.check_box_outlined
                   : Icons.check_box_outline_blank,
-              color: Colors.blue,
+              color: pColor,
             ),
             onTap: () {
               task.isDone = !task.isDone;
@@ -79,10 +96,10 @@ class _HomePageClass extends State<HomePage> {
                               setState(() {});
                               Navigator.pop(context);
                             },
-                            child: const Text(
+                            child: Text(
                               "YES",
                               style: TextStyle(
-                                color: Colors.blue,
+                                color: pColor,
                               ),
                             )),
                       ],
@@ -110,7 +127,7 @@ class _HomePageClass extends State<HomePage> {
 
   Widget _floatingButton() {
     return (FloatingActionButton(
-      backgroundColor: Colors.blue,
+      backgroundColor: pColor,
       shape: const CircleBorder(),
       child: const Icon(
         Icons.add,
@@ -150,10 +167,10 @@ class _HomePageClass extends State<HomePage> {
                           actions: [
                             TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text(
+                                child: Text(
                                   "OK",
                                   style: TextStyle(
-                                    color: Colors.blue,
+                                    color: pColor,
                                   ),
                                 )),
                           ],
@@ -190,10 +207,10 @@ class _HomePageClass extends State<HomePage> {
                             actions: [
                               TextButton(
                                   onPressed: () => Navigator.pop(context),
-                                  child: const Text(
+                                  child: Text(
                                     "OK",
                                     style: TextStyle(
-                                      color: Colors.blue,
+                                      color: pColor,
                                     ),
                                   )),
                             ],
@@ -202,10 +219,10 @@ class _HomePageClass extends State<HomePage> {
                   }
                 },
                 autofocus: true,
-                child: const Text(
+                child: Text(
                   "Save",
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: pColor,
                   ),
                 ),
               ),
@@ -218,14 +235,14 @@ class _HomePageClass extends State<HomePage> {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: pColor,
         content: Text(
           content,
         ),
         action: SnackBarAction(
           label: "OK",
           textColor: Colors.white,
-          backgroundColor: Colors.blue,
+          backgroundColor: pColor,
           onPressed: () => scaffold.hideCurrentSnackBar,
         ),
       ),
