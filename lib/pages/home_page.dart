@@ -66,6 +66,29 @@ class _HomePageClass extends State<HomePage> {
               _box!.putAt(index, task.toMap());
               setState(() {});
             },
+            onLongPress: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Delete This Task?"),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              _box!.deleteAt(index);
+                              setState(() {});
+                              Navigator.pop(context);
+                            },
+                            child: const Text(
+                              "YES",
+                              style: TextStyle(
+                                color: Colors.blue,
+                              ),
+                            )),
+                      ],
+                    );
+                  });
+            },
           );
         });
   }
