@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:taskly/modals/task.dart';
-import 'package:taskly/app_Color/Pcolor.dart';
+import 'package:Taskly/modals/task.dart';
+import 'package:Taskly/app_Color/Pcolor.dart';
 
 class HomePage extends StatefulWidget {
   HomePage();
@@ -37,9 +37,9 @@ class _HomePageClass extends State<HomePage> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 40),
-              height: _deviceHeight! * .18,
-              width: _deviceHeight! * .16,
+              margin: const EdgeInsets.only(left: 10),
+              height: _deviceHeight! * .17,
+              width: _deviceHeight! * .15,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.contain,
