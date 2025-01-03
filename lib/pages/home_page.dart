@@ -61,6 +61,11 @@ class _HomePageClass extends State<HomePage> {
                   : Icons.check_box_outline_blank,
               color: Colors.blue,
             ),
+            onTap: () {
+              task.isDone = !task.isDone;
+              _box!.putAt(index, task.toMap());
+              setState(() {});
+            },
           );
         });
   }
